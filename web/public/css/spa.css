@@ -2407,38 +2407,35 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
   text-overflow: ellipsis !important;
 }
 
-/* Footer đồng bộ: Tách 2 tầng rõ ràng, không bao giờ cái trên cái dưới */
-.menu-item__footer,
+/* Footer đồng bộ: Trên cùng 1 hàng ngang, nút bo tròn như cũ */
 .menu-item__tags {
   margin-top: auto !important;
   padding-top: 14px !important;
   border-top: 1px solid #f5f5f4 !important;
   display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-}
-
-.menu-item__badge-row {
-  display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  justify-content: flex-start !important;
   flex-wrap: nowrap !important;
-  overflow: hidden !important;
+  gap: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .menu-item__tag {
   display: inline-flex !important;
   align-items: center !important;
-  padding: 4px 10px !important;
+  justify-content: center !important;
+  padding: 4px 9px !important;
   font-size: 0.74rem !important;
   font-weight: 600 !important;
   border-radius: 999px !important;
   background: #faf8f5 !important;
   border: 1px solid #e7e5e4 !important;
   color: #57534e !important;
-  letter-spacing: 0.2px !important;
+  letter-spacing: 0.15px !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
+  line-height: 1.35 !important;
 }
 
 .menu-item__tag--cat {
@@ -2459,44 +2456,45 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
   border-color: #fecaca !important;
 }
 
-/* Nút Xem Chi Tiết dạng action button dàn ngang đẹp mắt, không rớt dòng */
-.menu-item__detail-btn,
-.menu-item__tag--unit {
-  display: flex !important;
+/* Nút Xem Chi Tiết bo tròn như cũ, nằm trên cùng 1 hàng ngang, đẩy về góc phải */
+.menu-item__tag--unit,
+.menu-item__tag--action {
+  margin-left: auto !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  padding: 9px 16px !important;
-  border-radius: 10px !important;
+  gap: 4px !important;
+  padding: 4px 11px !important;
+  border-radius: 999px !important;
   background: #fffbeb !important;
   border: 1px solid #fde68a !important;
   color: #b45309 !important;
-  font-size: 0.84rem !important;
+  font-size: 0.74rem !important;
   font-weight: 600 !important;
   text-decoration: none !important;
   white-space: nowrap !important;
-  transition: all 0.2s ease !important;
-  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
   cursor: pointer !important;
-  margin: 0 !important;
+  line-height: 1.35 !important;
+  box-sizing: border-box !important;
 }
 
-.menu-item__detail-btn:hover,
-.menu-item__tag--unit:hover {
-  background: #d97706 !important;
+.menu-item__tag--unit:hover,
+.menu-item__tag--action:hover {
+  background: #b45309 !important;
   color: #ffffff !important;
-  border-color: #d97706 !important;
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25) !important;
+  border-color: #b45309 !important;
+  box-shadow: 0 3px 10px rgba(180, 83, 9, 0.25) !important;
 }
 
-.menu-item__detail-btn:hover .ui-icon,
-.menu-item__tag--unit:hover .ui-icon {
-  transform: translateX(4px) !important;
+.menu-item__tag--unit:hover .ui-icon,
+.menu-item__tag--action:hover .ui-icon {
+  transform: translateX(3px) !important;
 }
 
-.menu-item__detail-btn .ui-icon,
-.menu-item__tag--unit .ui-icon {
+.menu-item__tag--unit .ui-icon,
+.menu-item__tag--action .ui-icon {
   transition: transform 0.2s ease !important;
 }
 

@@ -68,22 +68,20 @@ function DishCards({ dishes }) {
                     : "Đang cập nhật"}
                 </span>
               </div>
-              <div className="menu-item__footer">
-                <div className="menu-item__badge-row">
-                  {dish.category && <span className="menu-item__tag menu-item__tag--cat">{dish.category}</span>}
-                  <span
-                    className={`menu-item__tag ${
-                      dish.available
-                        ? "menu-item__tag--available"
-                        : "menu-item__tag--unavailable"
-                    }`}
-                  >
-                    {dish.available ? "Đang phục vụ" : "Tạm hết"}
-                  </span>
-                </div>
-                <Link to={`/dishes/${dish.id}`} className="menu-item__tag--unit menu-item__detail-btn">
-                  <span>Xem Chi Tiết Món Ăn</span>
-                  <ArrowRight className="ui-icon" size={15} aria-hidden="true" />
+              <div className="menu-item__tags">
+                {dish.category && <span className="menu-item__tag menu-item__tag--cat">{dish.category}</span>}
+                <span
+                  className={`menu-item__tag ${
+                    dish.available
+                      ? "menu-item__tag--available"
+                      : "menu-item__tag--unavailable"
+                  }`}
+                >
+                  {dish.available ? "Đang phục vụ" : "Tạm hết"}
+                </span>
+                <Link to={`/dishes/${dish.id}`} className="menu-item__tag menu-item__tag--unit">
+                  <span>Xem Chi Tiết</span>
+                  <ArrowRight className="ui-icon" size={13} aria-hidden="true" />
                 </Link>
               </div>
             </div>
