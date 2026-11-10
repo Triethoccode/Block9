@@ -2296,24 +2296,25 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
   }
 }
 
-/* 3. Thẻ Món Ăn Bo Góc Mềm & Đổ Bóng Hiện Đại */
+/* 3. Thẻ Món Ăn Bo Góc Mềm & Đồng Bộ Khung Thẻ Tuyệt Đối */
 .menu-grid {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)) !important;
   gap: 28px !important;
+  align-items: stretch !important;
 }
 
 .menu-item {
   display: flex !important;
   flex-direction: column !important;
+  height: 100% !important;
   padding: 0 !important;
   border-radius: 16px !important;
   background: #ffffff !important;
-  border: 1px solid rgba(231, 229, 228, 0.8) !important;
+  border: 1px solid rgba(231, 229, 228, 0.85) !important;
   overflow: hidden !important;
-  box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.05), 0 2px 6px -1px rgba(28, 25, 23, 0.03) !important;
+  box-shadow: 0 4px 18px -2px rgba(28, 25, 23, 0.05), 0 2px 6px -1px rgba(28, 25, 23, 0.03) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  position: relative !important;
 }
 
 .menu-item:hover {
@@ -2345,28 +2346,35 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
 }
 
 .menu-item__info {
-  padding: 18px 20px 20px !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 10px !important;
+  justify-content: space-between !important;
+  padding: 18px 20px 20px !important;
   flex: 1 !important;
+  gap: 12px !important;
 }
 
 .menu-item__header {
   display: flex !important;
   align-items: flex-start !important;
   justify-content: space-between !important;
-  gap: 12px !important;
-  margin-bottom: 2px !important;
+  gap: 10px !important;
+  min-height: 48px !important;
 }
 
 .menu-item__name {
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif !important;
-  font-size: 1.25rem !important;
+  font-size: 1.22rem !important;
   font-weight: 700 !important;
   color: #1c1917 !important;
   text-decoration: none !important;
   line-height: 1.35 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-wrap: balance !important;
   transition: color 0.2s ease !important;
 }
 
@@ -2376,10 +2384,11 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
 
 .menu-item__price {
   font-family: 'Playfair Display', serif !important;
-  font-size: 1.22rem !important;
+  font-size: 1.25rem !important;
   font-weight: 700 !important;
   color: #7f1d1d !important;
   white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .dish-card-meta {
@@ -2389,6 +2398,7 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
   font-size: 0.83rem !important;
   color: #78716c !important;
   line-height: 1.5 !important;
+  min-height: 42px !important;
 }
 
 .dish-card-meta__line {
@@ -2397,27 +2407,44 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
   text-overflow: ellipsis !important;
 }
 
+/* Footer đồng bộ: Tách 2 tầng rõ ràng, không bao giờ cái trên cái dưới */
+.menu-item__footer,
 .menu-item__tags {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 8px !important;
   margin-top: auto !important;
   padding-top: 14px !important;
   border-top: 1px solid #f5f5f4 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.menu-item__badge-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  overflow: hidden !important;
 }
 
 .menu-item__tag {
   display: inline-flex !important;
   align-items: center !important;
   padding: 4px 10px !important;
-  font-size: 0.75rem !important;
+  font-size: 0.74rem !important;
   font-weight: 600 !important;
   border-radius: 999px !important;
   background: #faf8f5 !important;
   border: 1px solid #e7e5e4 !important;
   color: #57534e !important;
   letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.menu-item__tag--cat {
+  background: #faf5ed !important;
+  color: #854d0e !important;
+  border-color: #fef08a !important;
 }
 
 .menu-item__tag--available {
@@ -2432,23 +2459,45 @@ h1, h2, h3, h4, .section-title, .page-hero__title {
   border-color: #fecaca !important;
 }
 
+/* Nút Xem Chi Tiết dạng action button dàn ngang đẹp mắt, không rớt dòng */
+.menu-item__detail-btn,
 .menu-item__tag--unit {
-  margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 9px 16px !important;
+  border-radius: 10px !important;
   background: #fffbeb !important;
+  border: 1px solid #fde68a !important;
   color: #b45309 !important;
-  border-color: #fde68a !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
   text-decoration: none !important;
+  white-space: nowrap !important;
   transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  margin: 0 !important;
 }
 
+.menu-item__detail-btn:hover,
 .menu-item__tag--unit:hover {
   background: #d97706 !important;
   color: #ffffff !important;
   border-color: #d97706 !important;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25) !important;
 }
 
+.menu-item__detail-btn:hover .ui-icon,
 .menu-item__tag--unit:hover .ui-icon {
-  transform: translateX(3px);
+  transform: translateX(4px) !important;
+}
+
+.menu-item__detail-btn .ui-icon,
+.menu-item__tag--unit .ui-icon {
+  transition: transform 0.2s ease !important;
 }
 
 /* 4. Auth Pages Styling Pro Max */

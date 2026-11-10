@@ -68,19 +68,22 @@ function DishCards({ dishes }) {
                     : "Đang cập nhật"}
                 </span>
               </div>
-              <div className="menu-item__tags">
-                {dish.category && <span className="menu-item__tag">{dish.category}</span>}
-                <span
-                  className={`menu-item__tag ${
-                    dish.available
-                      ? "menu-item__tag--available"
-                      : "menu-item__tag--unavailable"
-                  }`}
-                >
-                  {dish.available ? "Đang phục vụ" : "Tạm hết"}
-                </span>
-                <Link to={`/dishes/${dish.id}`} className="menu-item__tag menu-item__tag--unit">
-                  Xem Chi Tiết <ArrowRight className="ui-icon" aria-hidden="true" />
+              <div className="menu-item__footer">
+                <div className="menu-item__badge-row">
+                  {dish.category && <span className="menu-item__tag menu-item__tag--cat">{dish.category}</span>}
+                  <span
+                    className={`menu-item__tag ${
+                      dish.available
+                        ? "menu-item__tag--available"
+                        : "menu-item__tag--unavailable"
+                    }`}
+                  >
+                    {dish.available ? "Đang phục vụ" : "Tạm hết"}
+                  </span>
+                </div>
+                <Link to={`/dishes/${dish.id}`} className="menu-item__tag--unit menu-item__detail-btn">
+                  <span>Xem Chi Tiết Món Ăn</span>
+                  <ArrowRight className="ui-icon" size={15} aria-hidden="true" />
                 </Link>
               </div>
             </div>
@@ -372,17 +375,16 @@ export default function DishList() {
           </div>
 
           <h1 id="menu-hero-title" className="page-hero__title">
-            Hương vị Việt,
-            <br />
-            trọn vẹn từng món
+            Hương Vị Việt Trọn Vẹn Từng Món Ăn
           </h1>
           <p className="page-hero__description">
-            Khám phá những món ăn quen thuộc được chuẩn bị với sự tận tâm cao nhất, kết hợp nguyên liệu tươi sạch và phong cách ẩm thực Bistro đương đại.
+            Thưởng thức tinh hoa ẩm thực truyền thống Việt Nam trong không gian Bistro đương đại, phục vụ tận tâm từ nguồn nguyên liệu tươi sạch mỗi ngày.
           </p>
 
           <div className="hero-actions">
             <a className="hero-btn-main" href="#thuc-don">
-              Khám phá thực đơn <ArrowDown size={18} className="ui-icon" aria-hidden="true" />
+              <span>Khám Phá Thực Đơn</span>
+              <ArrowDown size={18} className="ui-icon" aria-hidden="true" />
             </a>
           </div>
 
@@ -390,23 +392,23 @@ export default function DishList() {
           <div className="hero-stats">
             <div className="hero-stat-item">
               <span className="hero-stat-number">
-                <Star size={17} fill="#f59e0b" color="#f59e0b" style={{ display: "inline-block", marginRight: "4px" }} />
+                <Star size={16} fill="#f59e0b" color="#f59e0b" style={{ display: "inline-block", marginRight: "4px" }} />
                 4.9/5
               </span>
-              <span className="hero-stat-label">Hơn 2,500+ đánh giá ẩm thực</span>
+              <span className="hero-stat-label">Đánh giá hài lòng</span>
             </div>
             <div className="hero-stat-divider" aria-hidden="true" />
             <div className="hero-stat-item">
               <span className="hero-stat-number">
-                <Leaf size={17} color="#10b981" style={{ display: "inline-block", marginRight: "4px" }} />
+                <Leaf size={16} color="#10b981" style={{ display: "inline-block", marginRight: "4px" }} />
                 100%
               </span>
-              <span className="hero-stat-label">Nguyên liệu tươi sạch hữu cơ</span>
+              <span className="hero-stat-label">Nguyên liệu tươi sạch</span>
             </div>
             <div className="hero-stat-divider" aria-hidden="true" />
             <div className="hero-stat-item">
               <span className="hero-stat-number">
-                <ChefHat size={17} color="#f59e0b" style={{ display: "inline-block", marginRight: "4px" }} />
+                <ChefHat size={16} color="#f59e0b" style={{ display: "inline-block", marginRight: "4px" }} />
                 10+
               </span>
               <span className="hero-stat-label">Bếp trưởng đạt chuẩn</span>
