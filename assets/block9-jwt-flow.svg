@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="494" viewBox="0 0 1100 494" role="img" aria-labelledby="title desc" font-family="Barlow, Arial, sans-serif" fill="#0A1931">
+  <title id="title">Luồng đăng nhập API bằng JWT</title>
+  <desc id="desc">SPA gửi email và password tới API login. API kiểm tra hash rồi ký JWT. SPA gắn Authorization Bearer ở các request sau. API verify chữ ký, hạn dùng và quyền rồi trả kết quả 200, 401 hoặc 403.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#0069C0"/></marker><marker id="arrowr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#E4002B"/></marker></defs>
+  <line x1="230" y1="66" x2="230" y2="488" stroke="#C2CEEA" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="870" y1="66" x2="870" y2="488" stroke="#C2CEEA" stroke-width="2" stroke-dasharray="6 6"/>
+  <rect x="105" y="10" width="250" height="56" rx="10" fill="white" stroke="#003087" stroke-width="2"/>
+  <text x="230" y="35" text-anchor="middle" font-size="24" font-weight="700" fill="#0A1931">SPA</text>
+  <text x="230" y="57" text-anchor="middle" font-size="18" fill="#0A1931">lớp gọi API trong browser</text>
+  <rect x="745" y="10" width="250" height="56" rx="10" fill="#003087" stroke="#003087" stroke-width="2"/>
+  <text x="870" y="47" text-anchor="middle" font-size="25" font-weight="700" fill="white">API</text>
+  <line x1="238" y1="100" x2="862" y2="100" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="550" y="91" text-anchor="middle" font-size="22">POST /api/auth/login: email, password</text>
+  <rect x="660" y="126" width="420" height="46" rx="8" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2"/>
+  <text x="870" y="155" text-anchor="middle" font-size="21">kiểm tra hash, ký JWT: sub, role, exp</text>
+  <line x1="862" y1="222" x2="238" y2="222" stroke="#0069C0" stroke-width="3" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+  <text x="550" y="213" text-anchor="middle" font-size="22">200 ok:true, data.accessToken</text>
+  <line x1="30" y1="274" x2="1070" y2="274" stroke="#E4002B" stroke-width="2" stroke-dasharray="10 6"/>
+  <rect x="445" y="257" width="210" height="32" fill="white"/>
+  <text x="550" y="281" text-anchor="middle" font-size="22" font-weight="700" fill="#E4002B">Các request sau</text>
+  <line x1="238" y1="332" x2="862" y2="332" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="550" y="323" text-anchor="middle" font-size="22">PATCH /api/books/3 + Authorization: Bearer ...</text>
+  <rect x="670" y="358" width="400" height="46" rx="8" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2"/>
+  <text x="870" y="387" text-anchor="middle" font-size="21">verify chữ ký, exp; kiểm tra quyền</text>
+  <line x1="862" y1="454" x2="238" y2="454" stroke="#0069C0" stroke-width="3" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+  <text x="550" y="445" text-anchor="middle" font-size="22">200 ok:true  |  401  |  403</text>
+</svg>

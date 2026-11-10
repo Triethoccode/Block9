@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, Search, X } from "lucide-react";
+import { ArrowDown, ArrowRight, Search, X, UtensilsCrossed } from "lucide-react";
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { dishApi } from "../../apiClient";
@@ -365,7 +365,6 @@ export default function DishList() {
         </picture>
         <div className="page-hero__overlay" />
         <div className="container page-hero__content">
-          <p className="menu-hero__eyebrow">Thực đơn RESTORAN</p>
           <h1 id="menu-hero-title" className="page-hero__title">
             Hương vị Việt,
             <br />
@@ -382,12 +381,47 @@ export default function DishList() {
 
       <section id="thuc-don" className="section menu-section">
         <div className="container">
-          <div className="section-header">
-            <span className="section-header__label">Tuyển Chọn Tinh Hoa</span>
-            <h2 className="section-header__title">Hương Vị Đặc Sắc</h2>
-            <div className="section-header__divider" />
-            <p className="section-header__text">
-              Mỗi món ăn bắt đầu từ những nguyên liệu tươi ngon nhất, chuẩn bị bởi kỹ nghệ ẩm thực gia truyền.
+          {/* Header thực đơn căn giữa với hoa văn trang trí */}
+          <div className="section-header" style={{ marginBottom: "36px", marginTop: "8px", textAlign: "center" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "8px" }}>
+              <span style={{ height: "1px", width: "42px", background: "linear-gradient(to right, transparent, #c5a880)" }}></span>
+              <span style={{ 
+                fontSize: "0.82rem", 
+                fontWeight: "700", 
+                letterSpacing: "4px", 
+                textTransform: "uppercase", 
+                color: "#c5a880"
+              }}>
+                RESTORAN CUISINE
+              </span>
+              <span style={{ height: "1px", width: "42px", background: "linear-gradient(to left, transparent, #c5a880)" }}></span>
+            </div>
+
+            <h2 style={{ 
+              fontSize: "clamp(2.1rem, 3.8vw, 2.75rem)", 
+              fontWeight: "700", 
+              color: "#1a202c", 
+              margin: "0 0 14px 0",
+              fontFamily: "'Playfair Display', Georgia, serif",
+              letterSpacing: "0.5px"
+            }}>
+              Thực Đơn Món Ăn
+            </h2>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", margin: "0 auto 14px" }}>
+              <div style={{ width: "55px", height: "1.5px", background: "#c5a880", opacity: 0.8 }} />
+              <UtensilsCrossed size={18} color="#c5a880" />
+              <div style={{ width: "55px", height: "1.5px", background: "#c5a880", opacity: 0.8 }} />
+            </div>
+
+            <p style={{ 
+              color: "#64748b", 
+              fontSize: "0.98rem", 
+              maxWidth: "520px", 
+              margin: "0 auto",
+              lineHeight: "1.6"
+            }}>
+              Khám phá tinh hoa ẩm thực truyền thống và đương đại, phục vụ tận tâm mỗi ngày.
             </p>
           </div>
 

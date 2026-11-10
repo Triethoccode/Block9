@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="420" viewBox="0 0 1100 420" role="img" aria-labelledby="title desc" font-family="Barlow, Arial, sans-serif" fill="#0A1931">
+  <title id="title">Trạng thái chờ MFA</title>
+  <desc id="desc">Chưa đăng nhập, password đúng sang chờ MFA. Ở trạng thái này chưa có session đầy đủ và không được tới bước phân quyền hay handler. OTP hoặc recovery code hợp lệ mới sang đã xác thực đầy đủ, rồi tới phân quyền và handler. OTP sai ở lại và đếm lần thử, vượt giới hạn thì khóa tạm.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#0069C0"/></marker><marker id="arrowr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#E4002B"/></marker></defs>
+  <rect x="10" y="100" width="170" height="100" rx="10" fill="white" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="95.0" y="144" text-anchor="middle" font-size="24" font-weight="700" fill="#0A1931"><tspan x="95.0">Chưa</tspan><tspan x="95.0" dy="29">đăng nhập</tspan></text>
+  <text x="250" y="112" text-anchor="middle" font-size="21">password</text>
+  <text x="250" y="136" text-anchor="middle" font-size="21">đúng</text>
+  <line x1="182" y1="150" x2="318" y2="150" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="320" y="80" width="280" height="140" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="460.0" y="144" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="460.0">Chờ MFA (mfaPending)</tspan><tspan x="460.0" dy="26">chưa có session đầy đủ</tspan></text>
+  <text x="690" y="104" text-anchor="middle" font-size="20">OTP hoặc</text>
+  <text x="690" y="127" text-anchor="middle" font-size="20">recovery code</text>
+  <text x="690" y="150" text-anchor="middle" font-size="20">hợp lệ</text>
+  <line x1="602" y1="170" x2="778" y2="170" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="780" y="100" width="310" height="100" rx="10" fill="#003087" stroke="#003087" stroke-width="2.5"/>
+  <text x="935.0" y="144" text-anchor="middle" font-size="24" font-weight="700" fill="white"><tspan x="935.0">Đã xác thực đầy đủ</tspan><tspan x="935.0" dy="29">session đầy đủ</tspan></text>
+  <path d="M400 80 C400 30 520 30 520 78" fill="none" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <text x="460" y="22" text-anchor="middle" font-size="21" fill="#E4002B">OTP sai: ở lại, tăng số lần thử</text>
+  <line x1="935" y1="202" x2="935" y2="272" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="780" y="274" width="310" height="84" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="935.0" y="310" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="935.0">Phân quyền (RBAC, ABAC)</tspan><tspan x="935.0" dy="26">rồi handler</tspan></text>
+  <line x1="460" y1="222" x2="460" y2="272" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <rect x="320" y="274" width="280" height="84" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="460.0" y="310" text-anchor="middle" font-size="22" fill="#E4002B"><tspan x="460.0">Không tới phân quyền</tspan><tspan x="460.0" dy="26">và handler</tspan></text>
+  <text x="10" y="398" text-anchor="start" font-size="22">Quá giới hạn thử: khóa tạm. Mọi đường đăng nhập phải qua bước chờ MFA.</text>
+</svg>

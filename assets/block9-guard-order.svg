@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="390" viewBox="0 0 1100 390" role="img" aria-labelledby="title desc" font-family="Barlow, Arial, sans-serif" fill="#0A1931">
+  <title id="title">Thứ tự kiểm tra quyền</title>
+  <desc id="desc">Request lần lượt qua bốn cổng: có phiên đăng nhập, role có quyền, sách tồn tại, thuộc tính thỏa. Thất bại lần lượt chuyển tới login, trang 403, trang 404, trang 403. Qua cả bốn thì handler thực hiện.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#0069C0"/></marker><marker id="arrowr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#E4002B"/></marker></defs>
+  <rect x="10" y="40" width="235" height="110" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="127.5" y="90" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="127.5">Có phiên đăng nhập?</tspan><tspan x="127.5" dy="26">user từ session</tspan></text>
+  <polyline points="127,150 127,210" fill="none" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <rect x="20" y="212" width="215" height="58" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="127.5" y="249" text-anchor="middle" font-size="22" font-weight="700" fill="#E4002B">303 /login</text>
+  <line x1="245" y1="95" x2="290" y2="95" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="290" y="40" width="235" height="110" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="407.5" y="90" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="407.5">Role có quyền?</tspan><tspan x="407.5" dy="26">RBAC</tspan></text>
+  <polyline points="407,150 407,210" fill="none" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <rect x="300" y="212" width="215" height="58" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="407.5" y="249" text-anchor="middle" font-size="22" font-weight="700" fill="#E4002B">Trang 403</text>
+  <line x1="525" y1="95" x2="570" y2="95" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="570" y="40" width="235" height="110" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="687.5" y="90" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="687.5">Sách tồn tại?</tspan><tspan x="687.5" dy="26">tải từ database</tspan></text>
+  <polyline points="687,150 687,210" fill="none" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <rect x="580" y="212" width="215" height="58" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="687.5" y="249" text-anchor="middle" font-size="22" font-weight="700" fill="#E4002B">Trang 404</text>
+  <line x1="805" y1="95" x2="850" y2="95" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="850" y="40" width="235" height="110" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="967.5" y="90" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="967.5">Thuộc tính thỏa?</tspan><tspan x="967.5" dy="26">ABAC</tspan></text>
+  <polyline points="967,150 967,210" fill="none" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <rect x="860" y="212" width="215" height="58" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="967.5" y="249" text-anchor="middle" font-size="22" font-weight="700" fill="#E4002B">Trang 403</text>
+  <text x="10" y="330" text-anchor="start" font-size="22">Cả bốn đều đạt: handler thực hiện thao tác. Mỗi cổng chạy ở server cho từng request.</text>
+  <text x="10" y="362" text-anchor="start" font-size="22">303 /login: chưa biết người gọi. Trang 403: biết người gọi nhưng không được phép.</text>
+</svg>

@@ -1,28 +1,51 @@
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X, LogIn, LogOut, User, KeyRound, ShieldCheck, ChevronDown } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
+  const isAuthPage = [
+    "/register",
+    "/login",
+    "/activate",
+    "/forgot-password",
+    "/reset-password",
+    "/change-password",
+  ].some((path) => location.pathname.startsWith(path));
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const toggleRef = useRef(null);
   const panelRef = useRef(null);
+  const userMenuRef = useRef(null);
 
-  function closeMenu(restoreFocus = false)
-  {
+  // Đóng user menu khi click bên ngoài
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Trên các trang quản trị, trang xác thực (login/register) hoặc khi cuộn trang: luôn có nền tối để chữ và logo không bị chìm
+  const isSolid = isAdmin || isAuthPage || isScrolled;
+
+  function closeMenu(restoreFocus = false) {
     setMenuOpen(false);
-    if (restoreFocus)
-    {
+    if (restoreFocus) {
       toggleRef.current?.focus({ preventScroll: true });
     }
   }
 
-  function handleNavigationClick(event)
-  {
-    if (event.target.closest("a"))
-    {
+  function handleNavigationClick(event) {
+    if (event.target.closest("a") || event.target.closest("button")) {
       closeMenu();
     }
   }
@@ -37,64 +60,166 @@ export default function Navbar() {
   }, []);
 
   // Đóng menu mobile khi chuyển route
-  useEffect(() =>
-  {
+  useEffect(() => {
     setMenuOpen(false);
   }, [location]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     const mobile = window.matchMedia("(max-width: 768px)");
-    function handleBreakpointChange()
-    {
+    function handleBreakpointChange() {
       setMenuOpen(false);
     }
     mobile.addEventListener("change", handleBreakpointChange);
     return () => mobile.removeEventListener("change", handleBreakpointChange);
   }, []);
 
-  useEffect(() =>
-  {
-    if (!menuOpen)
-    {
-      return;
-    }
+  useEffect(() => {
+    if (!menuOpen) return;
     const body = document.body;
     const overflow = body.style.getPropertyValue("overflow");
     const priority = body.style.getPropertyPriority("overflow");
     body.style.setProperty("overflow", "hidden");
     panelRef.current?.querySelector("a")?.focus({ preventScroll: true });
-    function handleEscape(event)
-    {
-      if (event.key === "Escape")
-      {
+
+    function handleEscape(event) {
+      if (event.key === "Escape") {
         event.preventDefault();
         closeMenu(true);
       }
     }
     document.addEventListener("keydown", handleEscape);
-    return () =>
-    {
+    return () => {
       document.removeEventListener("keydown", handleEscape);
-      if (overflow)
-      {
+      if (overflow) {
         body.style.setProperty("overflow", overflow, priority);
-      }
-      else
-      {
+      } else {
         body.style.removeProperty("overflow");
       }
     };
   }, [menuOpen]);
 
+  const canAccessAdmin = isAuthenticated;
+
+  const renderUserMenu = () => (
+    <div ref={userMenuRef} style={{ position: "relative", marginLeft: "12px" }}>
+      <button
+        type="button"
+        onClick={() => setUserMenuOpen((prev) => !prev)}
+        style={{
+          background: "rgba(255, 255, 255, 0.12)",
+          border: "1px solid rgba(255, 255, 255, 0.25)",
+          borderRadius: "20px",
+          padding: "5px 12px",
+          color: "#ffffff",
+          cursor: "pointer",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          fontSize: "13px",
+          fontWeight: "500",
+        }}
+        title="Quản lý tài khoản"
+        aria-expanded={userMenuOpen}
+        aria-haspopup="true"
+      >
+        <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#d97706", display: "flex", alignItems: "center", justifyContent: "center", color: "#1c1917" }}>
+          <User size={13} strokeWidth={2.5} />
+        </div>
+        <span style={{ maxWidth: "160px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {user?.email || "Tài khoản"}
+        </span>
+        <ChevronDown size={14} style={{ transform: userMenuOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+      </button>
+
+      {userMenuOpen && (
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: "calc(100% + 8px)",
+            width: "230px",
+            background: "#ffffff",
+            borderRadius: "10px",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.15)",
+            border: "1px solid #e5e7eb",
+            padding: "8px 0",
+            zIndex: 1050,
+            color: "#1f2937",
+          }}
+        >
+          <div style={{ padding: "8px 16px", borderBottom: "1px solid #f3f4f6" }}>
+            <p style={{ margin: 0, fontSize: "11px", color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.5px", fontWeight: "600" }}>
+              Tài khoản đăng nhập
+            </p>
+            <p style={{ margin: "2px 0 0", fontSize: "13px", fontWeight: "600", color: "#111827", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {user?.email}
+            </p>
+          </div>
+
+          <div style={{ padding: "4px 0" }}>
+            <Link
+              to="/change-password"
+              onClick={() => {
+                setUserMenuOpen(false);
+                closeMenu();
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "9px 16px",
+                fontSize: "13px",
+                color: "#374151",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f9fafb")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+            >
+              <KeyRound size={16} color="#d97706" />
+              <span>Đặt lại mật khẩu</span>
+            </Link>
+          </div>
+
+          <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: "4px" }}>
+            <button
+              type="button"
+              onClick={() => {
+                setUserMenuOpen(false);
+                closeMenu();
+                logout();
+              }}
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "9px 16px",
+                fontSize: "13px",
+                color: "#dc2626",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#fef2f2")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+            >
+              <LogOut size={16} />
+              <span>Đăng xuất</span>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <nav
       aria-label="Điều hướng chính"
-      className={`navbar ${isAdmin ? "navbar--admin" : ""} ${isScrolled ? "navbar--scrolled" : ""}`}
-      onBlur={(event) =>
-      {
-        if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget))
-        {
+      className={`navbar ${isAdmin || isAuthPage ? "navbar--admin" : ""} ${isSolid ? "navbar--scrolled" : ""}`}
+      style={isSolid ? { background: "var(--charcoal, #1c1917)", borderBottom: "2px solid var(--gold, #d97706)" } : {}}
+      onBlur={(event) => {
+        if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
           closeMenu();
         }
       }}
@@ -108,7 +233,7 @@ export default function Navbar() {
           onClick={() => closeMenu(true)}
         />
       )}
-      <div className="container navbar__inner">
+      <div className="navbar__inner" style={{ width: "100%", maxWidth: "100%", padding: "0 clamp(20px, 3.5vw, 48px)", boxSizing: "border-box" }}>
         {isAdmin ? (
           /* ==================== PHÍA QUẢN TRỊ (ADMIN) ==================== */
           <>
@@ -147,6 +272,9 @@ export default function Navbar() {
               <Link to="/dishes" className="navbar__link navbar__link--client">
                 Xem Trang Khách <ArrowRight className="ui-icon" aria-hidden="true" />
               </Link>
+
+              {/* Thông tin user & Menu Thao tác */}
+              {renderUserMenu()}
             </div>
           </>
         ) : (
@@ -167,9 +295,25 @@ export default function Navbar() {
                 Thực Đơn
               </NavLink>
 
-              <Link to="/admin/dishes" className="navbar__link navbar__link--admin">
-                Cổng Quản Trị
-              </Link>
+              {canAccessAdmin && (
+                <Link to="/admin/dishes" className="navbar__link navbar__link--admin">
+                  Cổng Quản Trị
+                </Link>
+              )}
+
+              {/* Khu vực Xác thực người dùng */}
+              {isAuthenticated ? (
+                renderUserMenu()
+              ) : (
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "8px" }}>
+                  <Link to="/login" className="navbar__link" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                    <LogIn size={15} /> Đăng Nhập
+                  </Link>
+                  <Link to="/register" className="btn btn--primary" style={{ padding: "6px 14px", fontSize: "13px" }}>
+                    Đăng Ký
+                  </Link>
+                </div>
+              )}
             </div>
           </>
         )}
@@ -181,14 +325,10 @@ export default function Navbar() {
           aria-label={menuOpen ? "Đóng menu điều hướng" : "Mở menu điều hướng"}
           aria-expanded={menuOpen}
           aria-controls="main-navigation"
-          onClick={() =>
-          {
-            if (menuOpen)
-            {
+          onClick={() => {
+            if (menuOpen) {
               closeMenu(true);
-            }
-            else
-            {
+            } else {
               setMenuOpen(true);
             }
           }}

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../prisma");
 const { parseValidId, validateChef } = require("../validation");
+const { authenticateToken } = require("../middleware/authenticateToken");
+const { requireRole } = require("../middleware/authorize");
 
 // 1. GET /api/chefs - Danh sách đầu bếp (có tìm kiếm q)
 router.get("/", async (req, res, next) => {
@@ -74,8 +76,8 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// 3. POST /api/chefs - Thêm đầu bếp mới
-router.post("/", async (req, res, next) => {
+// 3. POST /api/chefs - Thêm đầu bếp mới (Yêu cầu đăng nhập)
+router.post("/", authenticateToken, async (req, res, next) => {
   try {
     const validation = validateChef(req.body, false);
     if (!validation.isValid) {
@@ -105,8 +107,8 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// 4. PATCH /api/chefs/:id - Sửa thông tin đầu bếp
-router.patch("/:id", async (req, res, next) => {
+// 4. PATCH /api/chefs/:id - Sửa thông tin đầu bếp (Yêu cầu đăng nhập)
+router.patch("/:id", authenticateToken, async (req, res, next) => {
   try {
     const id = parseValidId(req.params.id);
     if (id === null) {
@@ -160,8 +162,8 @@ router.patch("/:id", async (req, res, next) => {
   }
 });
 
-// 5. DELETE /api/chefs/:id - Xóa đầu bếp
-router.delete("/:id", async (req, res, next) => {
+// 5. DELETE /api/chefs/:id - Xóa đầu bếp (Yêu cầu đăng nhập)
+router.delete("/:id", authenticateToken, async (req, res, next) => {
   try {
     const id = parseValidId(req.params.id);
     if (id === null) {

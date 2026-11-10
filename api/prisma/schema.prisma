@@ -16,6 +16,7 @@ model Dish {
   available   Boolean      @default(true)
   imageUrl    String?
   chefId      Int?
+  status      String       @default("draft")
   chef        Chef?        @relation(fields: [chefId], references: [id], onDelete: SetNull)
   ingredients Ingredient[]
   createdAt   DateTime     @default(now())
@@ -28,6 +29,7 @@ model Chef {
   name      String
   specialty String
   dishes    Dish[]
+  users     User[]
   createdAt DateTime @default(now())
 
   @@map("chefs")
@@ -43,4 +45,87 @@ model Ingredient {
   createdAt DateTime @default(now())
 
   @@map("ingredients")
+}
+
+model User {
+  id                  String                @id @default(uuid()) @db.Uuid
+  emailRaw            String
+  email               String                @unique
+  passwordHash        String
+  role                String                @default("viewer")
+  status              String                @default("pending")
+  emailVerifiedAt     DateTime?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now()) @updatedAt
+  chefId              Int?
+  chef                Chef?                 @relation(fields: [chefId], references: [id], onDelete: SetNull)
+  mfaEnabled          Boolean               @default(false)
+  mfaSecret           String?
+  mfaLastStep         Int?
+  activationChallenge ActivationChallenge?
+  passwordResets      PasswordReset[]
+  recoveryCodes       RecoveryCode[]
+}
+
+model RecoveryCode {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model ActivationChallenge {
+  id              String    @id @default(uuid()) @db.Uuid
+  userId          String    @unique @db.Uuid
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose         String    @default("activation")
+  otpHash         String
+  expiresAt       DateTime
+  attempts        Int       @default(0)
+  lockedUntil     DateTime?
+  lastSentAt      DateTime
+  sendCount       Int       @default(1)
+  sendWindowStart DateTime
+  usedAt          DateTime?
+
+  @@index([expiresAt])
+}
+
+model PasswordReset {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model CaptchaChallenge {
+  id        String    @id @db.Uuid
+  anonId    String
+  purpose   String
+  answer    String
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  @@index([expiresAt])
+  @@index([anonId, purpose])
+}
+
+model RateLimit {
+  key         String    @id
+  count       Int       @default(0)
+  windowStart DateTime
+  lockedUntil DateTime?
+
+  @@index([windowStart])
+  @@index([lockedUntil])
 }

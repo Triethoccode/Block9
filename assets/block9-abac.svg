@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="380" viewBox="0 0 1100 380" role="img" aria-labelledby="title desc" font-family="Barlow, Arial, sans-serif" fill="#0A1931">
+  <title id="title">Quyết định ABAC</title>
+  <desc id="desc">Bốn nhóm thuộc tính đi vào quy tắc: subject có role editor và id 7, action là update, resource là sách 3 có managerId 7 và status draft, environment là tùy chọn. Quy tắc cho phép Admin hoặc Editor phụ trách sách đang draft. Đạt thì cho phép, không đạt thì hiện trang 403.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#0069C0"/></marker><marker id="arrowr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#E4002B"/></marker></defs>
+  <text x="14" y="32" text-anchor="start" font-size="24" font-weight="700" fill="#003087">MINH HỌA: kiểm tra PATCH /books/3</text>
+
+  <rect x="10" y="50" width="430" height="64" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2"/>
+  <text x="30" y="78" text-anchor="start" font-size="22" font-weight="700" fill="#003087">Subject (người gọi)</text>
+  <text x="30" y="103" text-anchor="start" font-size="22">role = editor, id = 7</text>
+  <rect x="10" y="122" width="430" height="64" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2"/>
+  <text x="30" y="150" text-anchor="start" font-size="22" font-weight="700" fill="#003087">Action (hành động)</text>
+  <text x="30" y="175" text-anchor="start" font-size="22">update</text>
+  <rect x="10" y="194" width="430" height="64" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2"/>
+  <text x="30" y="222" text-anchor="start" font-size="22" font-weight="700" fill="#003087">Resource (sách 3)</text>
+  <text x="30" y="247" text-anchor="start" font-size="22">managerId = 7, status = draft</text>
+  <rect x="10" y="266" width="430" height="64" rx="10" fill="white" stroke="#C2CEEA" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="30" y="294" text-anchor="start" font-size="22" font-weight="700" fill="#003087">Environment (môi trường)</text>
+  <text x="30" y="319" text-anchor="start" font-size="22">tùy chọn, ví dụ giờ gửi request</text>
+
+  <line x1="440" y1="82" x2="498" y2="82" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="440" y1="154" x2="498" y2="154" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="440" y1="226" x2="498" y2="226" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="440" y1="298" x2="498" y2="298" stroke="#0069C0" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+
+  <rect x="500" y="50" width="260" height="280" rx="10" fill="#003087" stroke="#003087" stroke-width="2.5"/>
+  <text x="630" y="130" text-anchor="middle" font-size="22" fill="white"><tspan x="630" font-weight="700">Quy tắc update</tspan><tspan x="630" dy="34">Admin</tspan><tspan x="630" dy="34">hoặc</tspan><tspan x="630" dy="34">Editor có managerId = id</tspan><tspan x="630" dy="34">và status = draft</tspan></text>
+
+  <line x1="760" y1="130" x2="858" y2="130" stroke="#0069C0" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="809" y="118" text-anchor="middle" font-size="18" fill="#0069C0">đạt</text>
+  <line x1="760" y1="250" x2="858" y2="250" stroke="#E4002B" stroke-width="3" marker-end="url(#arrowr)"/>
+  <text x="809" y="238" text-anchor="middle" font-size="18" fill="#E4002B">không đạt</text>
+
+  <rect x="860" y="88" width="230" height="84" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="975" y="139" text-anchor="middle" font-size="26" font-weight="700" fill="#0A1931">Cho phép</text>
+  <rect x="860" y="208" width="230" height="84" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="975" y="259" text-anchor="middle" font-size="26" font-weight="700" fill="#E4002B">Trang 403</text>
+
+  <text x="10" y="364" text-anchor="start" font-size="21">Thuộc tính của người gọi lấy từ session, của sách lấy từ database, không lấy từ form hay hidden field</text>
+</svg>

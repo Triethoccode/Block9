@@ -239,12 +239,31 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce)
-{
-  .skeleton-block
-  {
-    animation: none;
+/* Spinner xoay tròn liên tục khi load */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 0.85s linear infinite !important;
+  transform-origin: center center;
+}
+
+div.spinner {
+  width: 38px;
+  height: 38px;
+  border: 3.5px solid rgba(234, 88, 12, 0.2);
+  border-top-color: #ea580c;
+  border-right-color: #ea580c;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.85s linear infinite !important;
 }
 
 /* ==================== KHUNG ĐIỀU KHIỂN PHÂN TRANG, TÌM KIẾM & LỌC MÓN ĂN ==================== */

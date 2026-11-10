@@ -4,6 +4,13 @@ const request = require("supertest");
 const app = require("../src/app");
 const prisma = require("../src/prisma");
 const { validateDish } = require("../src/validation");
+const { signAccessToken } = require("../src/services/jwt");
+
+const adminToken = signAccessToken({
+  sub: "00000000-0000-0000-0000-000000000001",
+  email: "admin-test@example.com",
+  role: "admin",
+});
 
 test.after(async () => {
   await prisma.$disconnect();
@@ -59,6 +66,7 @@ test("6. GET /api/dishes/:id (ID sai định dạng chữ): Xử lý như không
 test("7. POST /api/dishes (Dữ liệu không hợp lệ): Trả về status 200 và lỗi nghiệp vụ VALIDATION_FAILED kèm fields", async () => {
   const res = await request(app)
     .post("/api/dishes")
+    .set("Authorization", `Bearer ${adminToken}`)
     .send({ name: "", price: -100 });
 
   assert.equal(res.status, 200);

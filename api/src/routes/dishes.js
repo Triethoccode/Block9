@@ -4,6 +4,8 @@ const prisma = require("../prisma");
 const { Prisma } = require("@prisma/client");
 const { dishFuzzyScoreSql, dishFulltextDocumentSql, normalizeSearchSql, FUZZY_SIMILARITY_THRESHOLD } = require("../search");
 const { parseValidId, validateDish } = require("../validation");
+const { authenticateToken } = require("../middleware/authenticateToken");
+const { requireRole } = require("../middleware/authorize");
 
 // GET /api/dishes - Tìm kiếm, lọc và phân trang món ăn ở database.
 router.get("/", async (req, res, next) => {
@@ -234,8 +236,8 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// 3. POST /api/dishes - Thêm món ăn mới
-router.post("/", async (req, res, next) => {
+// 3. POST /api/dishes - Thêm món ăn mới (Yêu cầu xác thực đăng nhập Bearer Token)
+router.post("/", authenticateToken, async (req, res, next) => {
   try {
     const validation = validateDish(req.body, false);
     if (!validation.isValid) {
@@ -249,10 +251,13 @@ router.post("/", async (req, res, next) => {
       });
     }
 
+    const chefId = validation.data.chefId || req.user.chefId || null;
+    const status = req.body.status === "draft" ? "draft" : "published";
+
     // Kiểm tra đầu bếp nếu có chọn
-    if (validation.data.chefId) {
+    if (chefId) {
       const chefExists = await prisma.chef.findUnique({
-        where: { id: validation.data.chefId },
+        where: { id: chefId },
       });
       if (!chefExists) {
         return res.status(200).json({
@@ -292,10 +297,11 @@ router.post("/", async (req, res, next) => {
       category: validation.data.category,
       available: validation.data.available,
       imageUrl: validation.data.imageUrl,
+      status,
     };
 
-    if (validation.data.chefId) {
-      createData.chef = { connect: { id: validation.data.chefId } };
+    if (chefId) {
+      createData.chef = { connect: { id: chefId } };
     }
     if (validation.ingredientIds && validation.ingredientIds.length > 0) {
       createData.ingredients = {
@@ -320,12 +326,12 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// 4. PATCH /api/dishes/:id - Chỉnh sửa một phần món ăn
-router.patch("/:id", async (req, res, next) => {
+// 4. PATCH /api/dishes/:id - Chỉnh sửa món ăn (Yêu cầu xác thực đăng nhập Bearer Token)
+router.patch("/:id", authenticateToken, async (req, res, next) => {
   try {
     const id = parseValidId(req.params.id);
     if (id === null) {
-      return res.status(200).json({
+      return res.status(404).json({
         ok: false,
         error: {
           code: "NOT_FOUND",
@@ -336,7 +342,7 @@ router.patch("/:id", async (req, res, next) => {
 
     const existing = await prisma.dish.findUnique({ where: { id } });
     if (!existing) {
-      return res.status(200).json({
+      return res.status(404).json({
         ok: false,
         error: {
           code: "NOT_FOUND",
@@ -410,6 +416,10 @@ router.patch("/:id", async (req, res, next) => {
       }
     }
 
+    if (req.body.status && ["draft", "published"].includes(req.body.status)) {
+      updateData.status = req.body.status;
+    }
+
     if (validation.ingredientIds !== undefined) {
       updateData.ingredients = {
         set: validation.ingredientIds.map((ingId) => ({ id: ingId })),
@@ -434,12 +444,12 @@ router.patch("/:id", async (req, res, next) => {
   }
 });
 
-// 5. DELETE /api/dishes/:id - Xóa món ăn
-router.delete("/:id", async (req, res, next) => {
+// 5. DELETE /api/dishes/:id - Xóa món ăn (Yêu cầu xác thực đăng nhập Bearer Token)
+router.delete("/:id", authenticateToken, async (req, res, next) => {
   try {
     const id = parseValidId(req.params.id);
     if (id === null) {
-      return res.status(200).json({
+      return res.status(404).json({
         ok: false,
         error: {
           code: "NOT_FOUND",
@@ -450,7 +460,7 @@ router.delete("/:id", async (req, res, next) => {
 
     const existing = await prisma.dish.findUnique({ where: { id } });
     if (!existing) {
-      return res.status(200).json({
+      return res.status(404).json({
         ok: false,
         error: {
           code: "NOT_FOUND",

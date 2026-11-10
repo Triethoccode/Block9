@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="404" viewBox="0 0 1100 404" role="img" aria-labelledby="title desc" font-family="Barlow, Arial, sans-serif" fill="#0A1931">
+  <title id="title">Cơ chế TOTP</title>
+  <desc id="desc">Server và ứng dụng authenticator giữ cùng secret và đồng hồ. Mỗi bên tính mã từ secret và bước thời gian. Người dùng đọc mã từ app và nhập vào form, server tính lại để so.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#0069C0"/></marker><marker id="arrowr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#E4002B"/></marker></defs>
+  <text x="550" y="32" text-anchor="middle" font-size="24" font-weight="700" fill="#003087">MINH HỌA: hai bên tự tính, server không gửi mã cho app</text>
+  <rect x="10" y="56" width="380" height="230" rx="10" fill="#003087" stroke="#003087" stroke-width="2.5"/>
+  <text x="200.0" y="126" text-anchor="middle" font-size="22" fill="white"><tspan x="200.0">Server</tspan><tspan x="200.0" dy="26">secret của user 7</tspan><tspan x="200.0" dy="26">bước thời gian = t / 30 giây</tspan><tspan x="200.0" dy="26">mã = HMAC(secret, bước)</tspan><tspan x="200.0" dy="26">rút gọn thành 6 chữ số</tspan></text>
+  <rect x="710" y="56" width="380" height="230" rx="10" fill="#0069C0" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="900.0" y="126" text-anchor="middle" font-size="22" fill="white"><tspan x="900.0">Ứng dụng authenticator</tspan><tspan x="900.0" dy="26">cùng secret, cùng đồng hồ</tspan><tspan x="900.0" dy="26">bước thời gian = t / 30 giây</tspan><tspan x="900.0" dy="26">mã = HMAC(secret, bước)</tspan><tspan x="900.0" dy="26">rút gọn thành 6 chữ số</tspan></text>
+  <rect x="440" y="100" width="220" height="70" rx="10" fill="white" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="550.0" y="143" text-anchor="middle" font-size="23" font-weight="700" fill="#0A1931">Người dùng</text>
+  <line x1="706" y1="135" x2="664" y2="135" stroke="#0069C0" stroke-width="3" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+  <line x1="436" y1="135" x2="394" y2="135" stroke="#0069C0" stroke-width="3" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+  <text x="550" y="215" text-anchor="middle" font-size="21">Đọc mã 6 số từ app,</text>
+  <text x="550" y="241" text-anchor="middle" font-size="21">nhập vào form</text>
+  <rect x="10" y="316" width="520" height="70" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="270.0" y="346" text-anchor="middle" font-size="21" fill="#0A1931"><tspan x="270.0">Thiết lập: QR hoặc secret nhập tay</tspan><tspan x="270.0" dy="25">đưa secret sang app</tspan></text>
+  <rect x="570" y="316" width="520" height="70" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="830.0" y="346" text-anchor="middle" font-size="21" fill="#0A1931"><tspan x="830.0">Đăng nhập: nhập mã, server tính lại</tspan><tspan x="830.0" dy="25">và so với mã của mình</tspan></text>
+</svg>

@@ -4,6 +4,8 @@ const prisma = require("../prisma");
 const { Prisma } = require("@prisma/client");
 const { fuzzyScoreSql, FUZZY_SIMILARITY_THRESHOLD } = require("../search");
 const { parseValidId, validateIngredient } = require("../validation");
+const { authenticateToken } = require("../middleware/authenticateToken");
+const { requireRole } = require("../middleware/authorize");
 
 // 1. GET /api/ingredients - Danh sách nguyên liệu (có tìm kiếm q và lọc category)
 router.get("/", async (req, res, next) => {
@@ -134,8 +136,8 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// 3. POST /api/ingredients - Thêm nguyên liệu mới
-router.post("/", async (req, res, next) => {
+// 3. POST /api/ingredients - Thêm nguyên liệu mới (Yêu cầu đăng nhập)
+router.post("/", authenticateToken, async (req, res, next) => {
   try {
     const validation = validateIngredient(req.body, false);
     if (!validation.isValid) {
@@ -167,8 +169,8 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// 4. PATCH /api/ingredients/:id - Sửa thông tin nguyên liệu
-router.patch("/:id", async (req, res, next) => {
+// 4. PATCH /api/ingredients/:id - Sửa thông tin nguyên liệu (Yêu cầu đăng nhập)
+router.patch("/:id", authenticateToken, async (req, res, next) => {
   try {
     const id = parseValidId(req.params.id);
     if (id === null) {
@@ -224,8 +226,8 @@ router.patch("/:id", async (req, res, next) => {
   }
 });
 
-// 5. DELETE /api/ingredients/:id - Xóa nguyên liệu
-router.delete("/:id", async (req, res, next) => {
+// 5. DELETE /api/ingredients/:id - Xóa nguyên liệu (Yêu cầu đăng nhập)
+router.delete("/:id", authenticateToken, async (req, res, next) => {
   try {
     const id = parseValidId(req.params.id);
     if (id === null) {

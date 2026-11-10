@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="404" viewBox="0 0 1100 404" role="img" aria-labelledby="title desc" font-family="Barlow, Arial, sans-serif" fill="#0A1931">
+  <title id="title">Cấu trúc JWT và sự khác nhau giữa decode và verify</title>
+  <desc id="desc">JWT có header, payload và signature. Header và payload chỉ được mã hóa Base64URL nên ai cũng decode được. Verify tính lại chữ ký bằng khóa của server rồi mới tin payload và kiểm tra exp.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#0069C0"/></marker><marker id="arrowr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#E4002B"/></marker></defs>
+  <text x="14" y="34" text-anchor="start" font-size="25" font-weight="700" fill="#003087">MINH HỌA: JWT gồm ba phần nối bằng dấu chấm</text>
+  <rect x="10" y="56" width="330" height="150" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="175.0" y="111" text-anchor="middle" font-size="23" fill="#0A1931"><tspan x="175.0">Header</tspan><tspan x="175.0" dy="28">{ "alg": "HS256",</tspan><tspan x="175.0" dy="28">  "typ": "JWT" }</tspan></text>
+  <text x="358" y="142" text-anchor="middle" font-size="44" font-weight="700">.</text>
+  <rect x="375" y="56" width="350" height="150" rx="10" fill="#EFF2FA" stroke="#C2CEEA" stroke-width="2.5"/>
+  <text x="550.0" y="99" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="550.0">Payload</tspan><tspan x="550.0" dy="26">{ "sub": "7",</tspan><tspan x="550.0" dy="26">  "role": "editor",</tspan><tspan x="550.0" dy="26">  "exp": 1767225600 }</tspan></text>
+  <text x="743" y="142" text-anchor="middle" font-size="44" font-weight="700">.</text>
+  <rect x="760" y="56" width="330" height="150" rx="10" fill="#003087" stroke="#003087" stroke-width="2.5"/>
+  <text x="925.0" y="112" text-anchor="middle" font-size="22" fill="white"><tspan x="925.0">Signature</tspan><tspan x="925.0" dy="26">HMAC-SHA256(</tspan><tspan x="925.0" dy="26">header.payload, secret)</tspan></text>
+  <rect x="10" y="236" width="520" height="150" rx="10" fill="white" stroke="#E4002B" stroke-width="2.5"/>
+  <text x="270.0" y="279" text-anchor="middle" font-size="22" fill="#E4002B"><tspan x="270.0">Decode</tspan><tspan x="270.0" dy="26">Base64URL giải ra JSON, không cần secret.</tspan><tspan x="270.0" dy="26">Ai cầm token cũng đọc được payload.</tspan><tspan x="270.0" dy="26">Không chứng minh token do server cấp.</tspan></text>
+  <rect x="570" y="236" width="520" height="150" rx="10" fill="white" stroke="#0069C0" stroke-width="2.5"/>
+  <text x="830.0" y="279" text-anchor="middle" font-size="22" fill="#0A1931"><tspan x="830.0">Verify</tspan><tspan x="830.0" dy="26">Tính lại chữ ký bằng secret của server.</tspan><tspan x="830.0" dy="26">Khớp, chưa quá exp: mới tin payload.</tspan><tspan x="830.0" dy="26">Sửa một ký tự payload thì chữ ký lệch.</tspan></text>
+</svg>

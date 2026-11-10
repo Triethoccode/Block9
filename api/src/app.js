@@ -4,19 +4,34 @@ const express = require("express");
 const dishesRouter = require("./routes/dishes");
 const chefsRouter = require("./routes/chefs");
 const ingredientsRouter = require("./routes/ingredients");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
 // 1. Cấu hình CORS chặt chẽ theo tiêu chuẩn bài học
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  CLIENT_ORIGIN,
+];
 
 app.use((req, res, next) => {
-  // Chỉ chấp nhận Origin của SPA, tuyệt đối không dùng wildcard *
-  res.setHeader("Access-Control-Allow-Origin", CLIENT_ORIGIN);
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  const origin = req.headers.origin;
+  if (origin && (allowedOrigins.includes(origin) || origin.endsWith(":5173"))) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", CLIENT_ORIGIN);
+  }
 
-  // Xử lý Preflight Request (OPTIONS) kích hoạt bởi PATCH/DELETE hoặc Content-Type: application/json
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    req.headers["access-control-request-headers"] || "Content-Type, Authorization, X-Anon-Id"
+  );
+
+  // Xử lý Preflight Request (OPTIONS) kích hoạt bởi PATCH/DELETE hoặc Content-Type / Authorization / X-Anon-Id
   if (req.method === "OPTIONS") {
     return res.sendStatus(204);
   }
@@ -27,6 +42,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // 3. Đăng ký các tài nguyên REST API
+app.use("/api/auth", authRouter);
 app.use("/api/dishes", dishesRouter);
 app.use("/api/chefs", chefsRouter);
 app.use("/api/ingredients", ingredientsRouter);
