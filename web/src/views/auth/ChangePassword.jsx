@@ -70,13 +70,13 @@ export default function ChangePassword() {
   const isSubmitDisabled = loading || isFormIncomplete || lockoutSeconds > 0;
 
   return (
-    <div className="container" style={{ paddingTop: "120px", paddingBottom: "60px", paddingLeft: "16px", paddingRight: "16px", maxWidth: "480px", margin: "0 auto", minHeight: "calc(100vh - 80px)" }}>
-      <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "32px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
-          <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#eff6ff", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
-            <KeyRound size={24} color="#2563eb" />
+    <div className="auth-page-container">
+      <div className="auth-card-pro">
+        <div style={{ textAlign: "center", marginBottom: "26px" }}>
+          <div className="auth-icon-badge">
+            <KeyRound size={24} color="#d97706" />
           </div>
-          <h1 style={{ fontSize: "24px", fontWeight: "700", color: "#1a202c", margin: 0 }}>Đặt Lại Mật Khẩu</h1>
+          <h1 className="auth-card-title">Đặt Lại Mật Khẩu</h1>
         </div>
 
         {success && (

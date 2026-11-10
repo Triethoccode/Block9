@@ -136,27 +136,33 @@ export default function Navbar() {
           style={{
             position: "absolute",
             right: 0,
-            top: "calc(100% + 8px)",
-            width: "230px",
+            top: "calc(100% + 10px)",
+            width: "240px",
             background: "#ffffff",
-            borderRadius: "10px",
-            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.15)",
-            border: "1px solid #e5e7eb",
+            borderRadius: "14px",
+            boxShadow: "0 18px 40px -6px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06)",
+            border: "1px solid rgba(229, 231, 235, 0.8)",
             padding: "8px 0",
             zIndex: 1050,
             color: "#1f2937",
+            animation: "fadeInDown 0.2s ease",
           }}
         >
-          <div style={{ padding: "8px 16px", borderBottom: "1px solid #f3f4f6" }}>
-            <p style={{ margin: 0, fontSize: "11px", color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.5px", fontWeight: "600" }}>
-              Tài khoản đăng nhập
-            </p>
-            <p style={{ margin: "2px 0 0", fontSize: "13px", fontWeight: "600", color: "#111827", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <div style={{ padding: "10px 16px 12px", borderBottom: "1px solid #f3f4f6" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
+              <p style={{ margin: 0, fontSize: "11px", color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.5px", fontWeight: "700" }}>
+                Tài khoản
+              </p>
+              <span style={{ fontSize: "10px", padding: "2px 7px", borderRadius: "999px", background: user?.role === "admin" ? "#fef3c7" : "#f3f4f6", color: user?.role === "admin" ? "#b45309" : "#4b5563", fontWeight: "700" }}>
+                {user?.role === "admin" ? "Quản Trị Viên" : "Thành Viên"}
+              </span>
+            </div>
+            <p style={{ margin: 0, fontSize: "13px", fontWeight: "600", color: "#111827", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {user?.email}
             </p>
           </div>
 
-          <div style={{ padding: "4px 0" }}>
+          <div style={{ padding: "6px 0" }}>
             <Link
               to="/change-password"
               onClick={() => {
@@ -171,6 +177,8 @@ export default function Navbar() {
                 fontSize: "13px",
                 color: "#374151",
                 textDecoration: "none",
+                fontWeight: "500",
+                transition: "background 0.15s ease",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f9fafb")}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
@@ -200,6 +208,8 @@ export default function Navbar() {
                 border: "none",
                 cursor: "pointer",
                 textAlign: "left",
+                fontWeight: "500",
+                transition: "background 0.15s ease",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#fef2f2")}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}

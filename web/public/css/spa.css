@@ -2124,3 +2124,398 @@ select.form-control,
     overflow-x: auto;
   }
 }
+
+/* ==========================================================================
+   UI/UX PRO MAX - LUXURY BISTRO DESIGN SYSTEM EXTENSIONS
+   Applied from ui-ux-pro-max-skill: Vibrant & Block-based / Fine Dining
+   ========================================================================== */
+
+/* 1. Global Polish & Typography Enhancement */
+body {
+  font-family: 'Plus Jakarta Sans', 'Lato', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  background-color: #faf8f5 !important;
+  color: #1c1917 !important;
+}
+
+h1, h2, h3, h4, .section-title, .page-hero__title {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif !important;
+}
+
+::selection {
+  background: rgba(217, 119, 6, 0.25);
+  color: #7f1d1d;
+}
+
+/* 2. Hero Section Pro Max */
+.menu-hero {
+  position: relative !important;
+  min-height: 520px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 140px 0 80px !important;
+}
+
+.menu-hero .page-hero__content {
+  max-width: 860px !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+.hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  color: #fef3c7;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hero-pill-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+.menu-hero .page-hero__title {
+  font-size: clamp(2.4rem, 5.2vw, 4.2rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.5px !important;
+  margin-bottom: 16px !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.menu-hero .page-hero__description {
+  font-size: clamp(1rem, 1.8vw, 1.18rem) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  max-width: 620px !important;
+  margin: 0 auto 30px !important;
+  line-height: 1.7 !important;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.hero-btn-main {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+  border: 1px solid rgba(245, 158, 11, 0.5) !important;
+  color: #ffffff !important;
+  padding: 13px 28px !important;
+  font-size: 0.98rem !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px -4px rgba(217, 119, 6, 0.5) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+.hero-btn-main:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 28px -2px rgba(217, 119, 6, 0.65) !important;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Social Proof Stats Bar */
+.hero-stats {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  padding: 14px 30px;
+  background: rgba(28, 25, 23, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.hero-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f59e0b;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hero-stat-label {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.2px;
+  font-weight: 500;
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 640px) {
+  .hero-stat-divider {
+    display: none;
+  }
+  .hero-stats {
+    gap: 14px;
+    padding: 12px 18px;
+  }
+}
+
+/* 3. Thẻ Món Ăn Bo Góc Mềm & Đổ Bóng Hiện Đại */
+.menu-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)) !important;
+  gap: 28px !important;
+}
+
+.menu-item {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(231, 229, 228, 0.8) !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.05), 0 2px 6px -1px rgba(28, 25, 23, 0.03) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+}
+
+.menu-item:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 32px -4px rgba(28, 25, 23, 0.12), 0 4px 12px -2px rgba(28, 25, 23, 0.06) !important;
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+
+.menu-item__image {
+  position: relative !important;
+  width: 100% !important;
+  height: 230px !important;
+  border-radius: 16px 16px 0 0 !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  background: #f5f5f4 !important;
+}
+
+.menu-item__image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 16px 16px 0 0 !important;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.menu-item:hover .menu-item__image img {
+  transform: scale(1.06) !important;
+}
+
+.menu-item__info {
+  padding: 18px 20px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  flex: 1 !important;
+}
+
+.menu-item__header {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-bottom: 2px !important;
+}
+
+.menu-item__name {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: #1c1917 !important;
+  text-decoration: none !important;
+  line-height: 1.35 !important;
+  transition: color 0.2s ease !important;
+}
+
+.menu-item__name:hover {
+  color: #d97706 !important;
+}
+
+.menu-item__price {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.22rem !important;
+  font-weight: 700 !important;
+  color: #7f1d1d !important;
+  white-space: nowrap !important;
+}
+
+.dish-card-meta {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  font-size: 0.83rem !important;
+  color: #78716c !important;
+  line-height: 1.5 !important;
+}
+
+.dish-card-meta__line {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.menu-item__tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-top: auto !important;
+  padding-top: 14px !important;
+  border-top: 1px solid #f5f5f4 !important;
+}
+
+.menu-item__tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 4px 10px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  border-radius: 999px !important;
+  background: #faf8f5 !important;
+  border: 1px solid #e7e5e4 !important;
+  color: #57534e !important;
+  letter-spacing: 0.2px !important;
+}
+
+.menu-item__tag--available {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+
+.menu-item__tag--unavailable {
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
+  border-color: #fecaca !important;
+}
+
+.menu-item__tag--unit {
+  margin-left: auto !important;
+  background: #fffbeb !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.menu-item__tag--unit:hover {
+  background: #d97706 !important;
+  color: #ffffff !important;
+  border-color: #d97706 !important;
+}
+
+.menu-item__tag--unit:hover .ui-icon {
+  transform: translateX(3px);
+}
+
+/* 4. Auth Pages Styling Pro Max */
+.auth-page-container {
+  min-height: calc(100vh - 80px);
+  padding: 130px 16px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 15%, rgba(217, 119, 6, 0.08) 0%, transparent 60%), #faf8f5;
+  box-sizing: border-box;
+}
+
+.auth-card-pro {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.85);
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 20px 40px -15px rgba(28, 25, 23, 0.08), 0 0 1px 1px rgba(28, 25, 23, 0.02);
+  box-sizing: border-box;
+}
+
+.auth-icon-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.12);
+}
+
+.auth-card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #1c1917;
+  margin: 0 0 6px;
+  letter-spacing: -0.3px;
+}
+
+.auth-card-desc {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.auth-input-field {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #d1d5db;
+  font-size: 0.95rem;
+  color: #1f2937;
+  box-sizing: border-box;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.auth-input-field:focus {
+  border-color: #d97706;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
