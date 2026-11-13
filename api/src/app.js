@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cookieParser = require("cookie-parser");
 
 const dishesRouter = require("./routes/dishes");
 const chefsRouter = require("./routes/chefs");
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
   }
 
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Headers",
     req.headers["access-control-request-headers"] || "Content-Type, Authorization, X-Anon-Id"
@@ -38,7 +40,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2. Parse payload JSON (bắt buộc cho REST API)
+// 2. Parse cookie và payload JSON (bắt buộc cho REST API)
+app.use(cookieParser());
 app.use(express.json());
 
 // 3. Đăng ký các tài nguyên REST API

@@ -8,6 +8,13 @@ const { atomic } = require("../services/atomic");
 const mail = require("../services/mail");
 const { signAccessToken } = require("../services/jwt");
 const { authenticateToken } = require("../middleware/authenticateToken");
+const {
+  REFRESH_TOKEN_COOKIE_NAME,
+  getCookieOptions,
+  createRefreshTokenSession,
+  rotateRefreshToken,
+  revokeRefreshToken,
+} = require("../services/refreshTokenService");
 const prisma = require("../prisma");
 
 const router = express.Router();
@@ -365,7 +372,7 @@ router.post("/login", async (req, res) => {
     // 6. Xóa bộ đếm thất bại sau khi đăng nhập thành công
     await prisma.rateLimit.deleteMany({ where: { key } });
 
-    // 7. Cấp phát JWT Access Token
+    // 7. Cấp phát JWT Access Token (ngắn hạn - 15 phút)
     const token = signAccessToken({
       sub: user.id,
       email: user.email,
@@ -373,10 +380,17 @@ router.post("/login", async (req, res) => {
       chefId: user.chefId,
     });
 
+    // 8. Cấp phát Refresh Token (dài hạn - 7 ngày) kèm Token Family
+    const session = await createRefreshTokenSession(user.id);
+
+    // Gắn Refresh Token vào HttpOnly Cookie
+    res.cookie(REFRESH_TOKEN_COOKIE_NAME, session.token, getCookieOptions());
+
     res.json({
       ok: true,
       data: {
         token,
+        refreshToken: session.token, // Phục vụ môi trường test/mobile nếu cần
         user: {
           id: user.id,
           email: user.email,
@@ -388,6 +402,121 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.error("Lỗi đăng nhập:", err);
     res.status(500).json({ ok: false, error: { code: "SERVER_ERROR", message: "Đã xảy ra lỗi khi đăng nhập." } });
+  }
+});
+
+/**
+ * POST /api/auth/refresh-token
+ * Xoay vòng Refresh Token (Rotation) và Phát hiện gian lận dùng lại (Reuse Detection)
+ */
+router.post("/refresh-token", async (req, res) => {
+  try {
+    const rawToken =
+      req.cookies?.[REFRESH_TOKEN_COOKIE_NAME] ||
+      req.body?.refreshToken ||
+      req.headers["x-refresh-token"];
+
+    if (!rawToken) {
+      return res.status(401).json({
+        ok: false,
+        error: {
+          code: "MISSING_REFRESH_TOKEN",
+          message: "Vui lòng cung cấp Refresh Token qua HttpOnly Cookie hoặc body.",
+        },
+      });
+    }
+
+    // Thực hiện xoay vòng token trong service
+    const rotated = await rotateRefreshToken(rawToken);
+
+    // Cấp phát Access Token mới
+    const newAccessToken = signAccessToken({
+      sub: rotated.user.id,
+      email: rotated.user.email,
+      role: rotated.user.role,
+      chefId: rotated.user.chefId,
+    });
+
+    // Cập nhật lại HttpOnly Cookie với Refresh Token đời mới
+    res.cookie(REFRESH_TOKEN_COOKIE_NAME, rotated.newRawToken, getCookieOptions());
+
+    res.json({
+      ok: true,
+      data: {
+        token: newAccessToken,
+        refreshToken: rotated.newRawToken,
+      },
+    });
+  } catch (err) {
+    // Luôn xóa cookie nếu phát hiện lỗi token hoặc bị hack
+    res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, {
+      httpOnly: true,
+      path: "/api/auth",
+    });
+
+    if (err.code === "REUSE_DETECTED") {
+      console.warn(`[SECURITY ALERT] ${err.message} (Family: ${err.familyId}, User: ${err.userId})`);
+      return res.status(403).json({
+        ok: false,
+        error: {
+          code: "REUSE_DETECTED",
+          message: err.message,
+        },
+      });
+    }
+
+    if (err.status) {
+      return res.status(err.status).json({
+        ok: false,
+        error: {
+          code: err.code || "UNAUTHORIZED",
+          message: err.message,
+        },
+      });
+    }
+
+    console.error("Lỗi xoay vòng refresh token:", err);
+    res.status(500).json({
+      ok: false,
+      error: { code: "SERVER_ERROR", message: "Đã xảy ra lỗi khi làm mới phiên làm việc." },
+    });
+  }
+});
+
+/**
+ * POST /api/auth/logout
+ * Đăng xuất và thu hồi Refresh Token / Family
+ */
+router.post("/logout", async (req, res) => {
+  try {
+    const rawToken =
+      req.cookies?.[REFRESH_TOKEN_COOKIE_NAME] ||
+      req.body?.refreshToken ||
+      req.headers["x-refresh-token"];
+
+    if (rawToken) {
+      await revokeRefreshToken(rawToken);
+    }
+
+    res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, {
+      httpOnly: true,
+      path: "/api/auth",
+    });
+
+    res.json({
+      ok: true,
+      data: { message: "Đăng xuất thành công. Phiên làm việc đã được thu hồi." },
+    });
+  } catch (err) {
+    console.error("Lỗi đăng xuất:", err);
+    res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, {
+      httpOnly: true,
+      path: "/api/auth",
+    });
+    res.status(500).json({
+      ok: false,
+      error: { code: "SERVER_ERROR", message: "Đã xảy ra lỗi khi đăng xuất." },
+    });
   }
 });
 

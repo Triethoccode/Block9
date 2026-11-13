@@ -7,6 +7,8 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "node --test tests/api.test.js",
+    "test:auth": "node --test tests/auth.test.js",
+    "test:rt": "node --test tests/refreshToken.test.js",
     "test:search": "node --test tests/search.test.js",
     "seed": "node prisma/seed.js",
     "seed:block7": "node prisma/seed_block7.js",
@@ -21,6 +23,7 @@
   "dependencies": {
     "@prisma/client": "^5.21.1",
     "argon2": "^0.45.2",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",

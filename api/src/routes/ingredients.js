@@ -7,6 +7,9 @@ const { parseValidId, validateIngredient } = require("../validation");
 const { authenticateToken } = require("../middleware/authenticateToken");
 const { requireRole } = require("../middleware/authorize");
 
+// Bắt buộc đăng nhập đối với toàn bộ tài nguyên nguyên liệu (Admin)
+router.use(authenticateToken);
+
 // 1. GET /api/ingredients - Danh sách nguyên liệu (có tìm kiếm q và lọc category)
 router.get("/", async (req, res, next) => {
   try {

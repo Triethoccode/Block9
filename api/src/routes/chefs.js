@@ -5,6 +5,9 @@ const { parseValidId, validateChef } = require("../validation");
 const { authenticateToken } = require("../middleware/authenticateToken");
 const { requireRole } = require("../middleware/authorize");
 
+// Bắt buộc đăng nhập đối với toàn bộ tài nguyên đầu bếp (Admin)
+router.use(authenticateToken);
+
 // 1. GET /api/chefs - Danh sách đầu bếp (có tìm kiếm q)
 router.get("/", async (req, res, next) => {
   try {

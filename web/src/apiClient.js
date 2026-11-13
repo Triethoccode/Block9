@@ -4,6 +4,23 @@ export const API_BASE_URL = "http://localhost:3000/api";
 const TOKEN_KEY = "access_token";
 const ANON_ID_KEY = "anon_device_id";
 
+// Quản lý trạng thái refresh token ngầm và hàng đợi chống race condition
+let isRefreshing = false;
+let refreshSubscribers = [];
+
+function subscribeTokenRefresh(cb) {
+  refreshSubscribers.push(cb);
+}
+
+function onRefreshed(newToken) {
+  refreshSubscribers.forEach((cb) => {
+    try {
+      cb(newToken);
+    } catch {}
+  });
+  refreshSubscribers = [];
+}
+
 /**
  * Lấy Token từ LocalStorage (An toàn trên cả Node.js test và Browser)
  */
@@ -63,7 +80,7 @@ export function getAnonId() {
  * @param {object} options - Cấu hình fetch (method, headers, body...)
  * @returns {Promise<any>} data trả về khi ok: true
  */
-export async function apiRequest(endpoint, options = {}) {
+export async function apiRequest(endpoint, options = {}, isRetry = false) {
   let response;
 
   const headers = {
@@ -88,6 +105,7 @@ export async function apiRequest(endpoint, options = {}) {
   // --- TẦNG 1: Kiểm tra lỗi mạng hoặc bị CORS chặn ---
   try {
     response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      credentials: "include", // Luôn đính kèm HttpOnly Cookie (chứa Refresh Token)
       ...options,
       headers,
     });
@@ -109,24 +127,110 @@ export async function apiRequest(endpoint, options = {}) {
       // payload rỗng hoặc non-json
     }
 
-    // Xử lý 401 Unauthorized: Phiên hết hạn hoặc chưa đăng nhập -> Xóa token
+    // Xử lý 401 Unauthorized: Phiên hết hạn -> Thử kích hoạt Silent Refresh Token
     if (response.status === 401) {
-      removeAuthToken();
-      // Phát sự kiện toàn cục để Context hoặc UI bắt
-      if (typeof window !== "undefined" && typeof window.dispatchEvent === "function") {
-        window.dispatchEvent(new CustomEvent("auth:unauthorized"));
+      // Nếu chính request login hoặc refresh-token bị 401, hoặc request này đã là retry -> dừng lại
+      const isAuthEndpoint =
+        endpoint === "/auth/refresh-token" ||
+        endpoint === "/auth/login" ||
+        endpoint === "/auth/activate";
+
+      if (isAuthEndpoint || isRetry) {
+        removeAuthToken();
+        if (typeof window !== "undefined" && typeof window.dispatchEvent === "function") {
+          window.dispatchEvent(new CustomEvent("auth:unauthorized"));
+        }
+        throw {
+          type: "UNAUTHORIZED",
+          isTechnical: false,
+          status: 401,
+          code: payload?.error?.code || "UNAUTHORIZED",
+          message: payload?.error?.message || "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.",
+        };
       }
-      throw {
-        type: "UNAUTHORIZED",
-        isTechnical: false,
-        status: 401,
-        code: payload?.error?.code || "UNAUTHORIZED",
-        message: payload?.error?.message || "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.",
-      };
+
+      // Nếu đang có một tiến trình refresh khác chạy ngầm -> Xếp hàng đợi
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          subscribeTokenRefresh((newToken) => {
+            if (!newToken) {
+              return reject({
+                type: "UNAUTHORIZED",
+                isTechnical: false,
+                status: 401,
+                code: "UNAUTHORIZED",
+                message: "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.",
+              });
+            }
+            // Thử lại request ban đầu với Access Token mới
+            const retryHeaders = {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            };
+            resolve(apiRequest(endpoint, { ...options, headers: retryHeaders }, true));
+          });
+        });
+      }
+
+      // Request đầu tiên đứng ra thực hiện Refresh Token
+      isRefreshing = true;
+
+      try {
+        const refreshResponse = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        const refreshData = await refreshResponse.json();
+
+        if (refreshResponse.ok && refreshData?.data?.token) {
+          const newToken = refreshData.data.token;
+          setAuthToken(newToken);
+          isRefreshing = false;
+          onRefreshed(newToken);
+
+          // Retry lại chính request hiện tại với Access Token mới
+          const retryHeaders = {
+            ...options.headers,
+            Authorization: `Bearer ${newToken}`,
+          };
+          return await apiRequest(endpoint, { ...options, headers: retryHeaders }, true);
+        } else {
+          // Refresh thất bại (hết hạn hoặc dính Reuse Detection)
+          isRefreshing = false;
+          onRefreshed(null);
+          removeAuthToken();
+          if (typeof window !== "undefined" && typeof window.dispatchEvent === "function") {
+            window.dispatchEvent(new CustomEvent("auth:unauthorized"));
+          }
+          throw {
+            type: refreshResponse.status === 403 ? "FORBIDDEN" : "UNAUTHORIZED",
+            isTechnical: false,
+            status: refreshResponse.status,
+            code: refreshData?.error?.code || "UNAUTHORIZED",
+            message: refreshData?.error?.message || "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.",
+          };
+        }
+      } catch (refreshErr) {
+        isRefreshing = false;
+        onRefreshed(null);
+        removeAuthToken();
+        if (typeof window !== "undefined" && typeof window.dispatchEvent === "function") {
+          window.dispatchEvent(new CustomEvent("auth:unauthorized"));
+        }
+        throw refreshErr;
+      }
     }
 
-    // Xử lý 403 Forbidden: Không đủ quyền
+    // Xử lý 403 Forbidden: Không đủ quyền hoặc phát hiện gian lận token
     if (response.status === 403) {
+      if (payload?.error?.code === "REUSE_DETECTED") {
+        removeAuthToken();
+        if (typeof window !== "undefined" && typeof window.dispatchEvent === "function") {
+          window.dispatchEvent(new CustomEvent("auth:unauthorized"));
+        }
+      }
       throw {
         type: "FORBIDDEN",
         isTechnical: false,
@@ -229,6 +333,14 @@ export const authApi = {
     apiRequest("/auth/change-password", {
       method: "POST",
       body: JSON.stringify(data),
+    }),
+  refreshToken: () =>
+    apiRequest("/auth/refresh-token", {
+      method: "POST",
+    }),
+  logout: () =>
+    apiRequest("/auth/logout", {
+      method: "POST",
     }),
 };
 

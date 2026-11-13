@@ -65,6 +65,7 @@ model User {
   activationChallenge ActivationChallenge?
   passwordResets      PasswordReset[]
   recoveryCodes       RecoveryCode[]
+  refreshTokens       RefreshToken[]
 }
 
 model RecoveryCode {
@@ -128,4 +129,22 @@ model RateLimit {
 
   @@index([windowStart])
   @@index([lockedUntil])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  familyId  String   @db.Uuid
+  tokenHash String   @unique
+  isUsed    Boolean  @default(false)
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
 }

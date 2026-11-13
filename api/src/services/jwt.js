@@ -6,12 +6,12 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) {
 }
 
 const ISSUER = "restaurant-api";
-const DEFAULT_EXPIRES_IN = "2h";
+const DEFAULT_EXPIRES_IN = process.env.ACCESS_TOKEN_EXPIRES_IN || "1m";
 
 /**
  * Ký tạo Access Token JWT
  * @param {Object} payload - Thông tin người dùng { sub, email, role, chefId }
- * @param {string} [expiresIn] - Thời hạn token (mặc định 2h)
+ * @param {string} [expiresIn] - Thời hạn token (mặc định 1 phút)
  * @returns {string} JWT Token
  */
 function signAccessToken(payload, expiresIn = DEFAULT_EXPIRES_IN) {

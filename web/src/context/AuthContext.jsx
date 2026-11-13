@@ -53,10 +53,16 @@ export function AuthProvider({ children }) {
     return result;
   };
 
-  const logout = () => {
-    removeAuthToken();
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authApi.logout();
+    } catch {
+      // Bỏ qua lỗi nếu mạng rớt khi logout
+    } finally {
+      removeAuthToken();
+      setToken(null);
+      setUser(null);
+    }
   };
 
   const value = {
